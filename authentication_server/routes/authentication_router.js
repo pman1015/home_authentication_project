@@ -1,0 +1,65 @@
+import express from "express";
+import { sendMail } from "../controllers/email_controller.js";
+import * as user_controller from "../controllers/user_controller.js";
+
+const authentication_router = express.Router();
+authentication_router.use(express.json());
+
+authentication_router.get("/login", async(req, res) => {
+ var user = await user_controller.getUser(req.body, res);
+ if(res.statusCode !== 200){
+        res.send("User not found");
+        return;
+ }
+ 
+user_controller.validatePassword(req.body, res, user);
+});
+
+authentication_router.get("/resetPassword", async(req, res) => {
+    var user = await user_controller.lookUpUserbyEmail(req.body, res);
+    if(res.statusCode !== 200){
+        res.send("User not found");
+        return;
+    }
+    const result = await sendMail(user.email, user.getResetJWT());
+    console.log(result);
+    res.send("Password reset:" + user.getResetJWT());
+});
+
+authentication_router.get("/validateJWT", async(req, res) => {
+
+});
+
+authentication_router.post("/createUser", async(req, res) => {
+    var user = await user_controller.getUser(req.body, res);
+    console.log(res.statusCode);
+
+    if(res.statusCode === 400){
+        res.send("Bad Request");
+        return;
+    }
+
+    if(res.statusCode !== 404){
+        console.log("404");
+        res.send("User already exists");
+        return;
+    }
+    await user_controller.createUser(req, res);
+    if(res.statusCode === 200){
+         res.send("User created");
+    }else{
+        res.send("User not created");s
+    }
+   
+    
+});
+
+authentication_router.post("/resetPassword", async(req, res) => {
+
+});
+
+authentication_router.post("/updateUsername", async(req, res) => {
+
+});
+
+export default authentication_router;
