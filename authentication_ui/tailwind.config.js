@@ -8,6 +8,7 @@ export default {
         base_accent: '#667A75',
         primary: '#3FB27F',
         pop: '#DCEDFF',
+        outline: '#95DABB',
       },
       fontFamily: {
         sans: ['Ubuntu', 'sans-serif'],
