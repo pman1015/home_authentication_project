@@ -1,0 +1,29 @@
+services:
+  database:
+    env_file:
+      - ./db/.env
+    container_name: authentication_db
+    hostname: authentication_db
+    build:
+      context: ./db
+    ports:
+      - 3306:3306
+  frontend:
+    env_file:
+      - ./authentication_ui/.production.env
+    container_name: authentication_ui
+    hostname: authentication_ui
+    build:
+      context: ./authentication_ui
+    ports:
+      - 5173:5173
+  backend:
+    env_file:
+      - ./authentication_server/.env
+    container_name: authentication_server
+    hostname: authentication_server
+    build: 
+      context: ./authentication_server
+    ports:
+      - 3000:3000
+

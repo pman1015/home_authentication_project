@@ -1,11 +1,28 @@
+import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import authentication_router from './routes/authentication_router.js';
 dotenv.config();
 
-
 const app = express();
 
+const domain = process.env.CORS_DOMAIN;
+const regex = new RegExp(`http.*:\/\/.*${domain}`) 
+
+console.log(`Domain: ${domain} Regex: ${regex}`)
+app.use(
+  cors({
+    origin: function (origin,callback) {
+      console.log(origin);
+      
+      if(origin.match(regex)){
+        callback(null, true);
+      }else{
+        callback(new Error('Not allowed by CORS'))
+      }
+    }
+  })
+);
 app.use(authentication_router);
 
 app.listen(process.env.PORT || 3000, () => {
