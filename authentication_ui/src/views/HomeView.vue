@@ -1,99 +1,19 @@
 <script setup>
-import axios from 'axios';
-import dotenv from 'dotenv';
+import InputForm from '@/components/InputForm.vue';
 import { ref } from 'vue';
-import InputForm from './../components/InputForm.vue';
-const userForm = ref([
-  {
-    id: 1,
-    label: 'Email',
-    error: '',
-  },
-  { id: 2, label: 'Username', error: '' },
-  {
-    id: 3,
-    label: 'Password',
-    error: '',
-    type: 'password',
-  },
-  {
-    id: 4,
-    label: 'ConfirmPassword',
-    error: '',
-    type: 'password',
-  },
+const formLabel = 'Login';
+const login_form = ref([
+  { label: 'username', type: 'text', error: '' },
+  { label: 'password', type: 'password', error: '' },
 ]);
-
-function addUser(user) {
-  console.log(user);
-  let valid = true;
-  if (user.Email === '' || user.Email === undefined) {
-    userForm.value[0].error = 'Email is required';
-    valid = false;
-  } else if (!user.Email.includes('@')) {
-    userForm.value[0].error = 'Email is invalid';
-    valid = false;
-  } else {
-    userForm.value[0].error = '';
-  }
-  if (user.Username === '' || user.Username === undefined) {
-    userForm.value[1].error = 'Username is required';
-    valid = false;
-  } else {
-    userForm.value[1].error = '';
-  }
-  if (user.Password === '' || user.Password === undefined) {
-    userForm.value[2].error = 'Password is required';
-    valid = false;
-  } else {
-    userForm.value[2].error = '';
-  }
-  if (user.ConfirmPassword === '' || user.ConfirmPassword === undefined) {
-    userForm.value[3].error = 'Confirm Password is required';
-    valid = false;
-  } else if (user.Password !== user.ConfirmPassword) {
-    userForm.value[3].error = 'Passwords do not match';
-    valid = false;
-  } else {
-    userForm.value[3].error = '';
-  }
-
-  if (valid) {
-    const destination = process.env.API_HOST || ""
-    console.log('User is valid');
-    axios
-      .post(
-        `${destination}/createUser`,
-
-        {
-          email: user.Email,
-          username: user.Username,
-          password: user.Password,
-        },
-        {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-      .catch((error) => {
-        console.log(error);
-        userForm.value[0].error = error.response.data;
-      })
-      .then((response) => {
-        console.log(response);
-      });
-  }
+function onSubmit(form_result) {
+  console.log(form_result);
 }
 </script>
 <template>
-  <div class="flex w-full align-middle flex-col justify-center items-center">
-    <h1 class="text-4xl text-pop">Add a New User</h1>
-    <p class="text-sm text-white w-1/6 text-justify pb-8">
-      Add a new user to the authentication service by adding an email and
-      setting a password
-    </p>
-    <InputForm formLabel="Add User" :options="userForm" :onSubmit="addUser" />
+  <div class="flex flex-col justify-center items-center w-9/12 h-full ml-auto mr-auto mt-16">
+    <h1 class="text-2xl text-pop text-center">Welcome to HurdLab Authentication</h1>
+    <p class="text-md mt-4 text-pop text-justify">please login below to verify your login </p>
+    <InputForm class="mt-4" :formLabel="formLabel" :options="login_form" :onSubmit="onSubmit" />
   </div>
 </template>
