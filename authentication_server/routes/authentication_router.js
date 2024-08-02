@@ -1,11 +1,12 @@
 import express from 'express';
 import { sendMail } from '../controllers/email_controller.js';
 import * as user_controller from '../controllers/user_controller.js';
+import validateJWT from '../util/validate_jwt.js';
 
 const authentication_router = express.Router();
 authentication_router.use(express.json());
 
-authentication_router.get('/login', async (req, res) => {
+authentication_router.post('/login', async (req, res) => {
   var user = await user_controller.getUser(req.body, res);
   if (res.statusCode !== 200) {
     res.send('User not found');
@@ -26,7 +27,21 @@ authentication_router.get('/resetPassword', async (req, res) => {
   res.send('Password reset:' + user.getResetJWT());
 });
 
-authentication_router.get('/validateJWT', async (req, res) => {});
+authentication_router.post('/validateJWT', async (req, res) => {
+  var jwt = req.body.jwt;
+  if(jwt === undefined){
+    res.send('Bad Request: JWT is required');
+    return;
+  }else{
+    validateJWT(jwt).then((result) => {
+      if(result === null){
+        res.send('Invalid JWT');
+      }else{
+        res.send('Valid JWT');
+      }
+    });
+  }
+});
 
 authentication_router.post('/createUser', async (req, res) => {
   var user = await user_controller.getUser(req.body, res);

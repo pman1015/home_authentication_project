@@ -8,14 +8,14 @@ const app = express();
 
 const domain = process.env.CORS_DOMAIN;
 const regex = new RegExp(`http.*:\/\/.*${domain}`) 
+const local_regex = new RegExp(`http:\/\/localhost.*`)
 
 console.log(`Domain: ${domain} Regex: ${regex}`)
 app.use(
   cors({
     origin: function (origin,callback) {
       console.log(origin);
-      
-      if(origin.match(regex)){
+      if(origin.match(regex) || origin.match(local_regex)){
         callback(null, true);
       }else{
         callback(new Error('Not allowed by CORS'))

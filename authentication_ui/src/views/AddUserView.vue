@@ -1,12 +1,12 @@
 <template>
-    <div class="flex w-full align-middle flex-col justify-center items-center">
-        <h1 class="text-4xl text-pop">Add a New User</h1>
-        <p class="text-sm text-white w-1/6 text-justify pb-8">
-            Add a new user to the authentication service by adding an email and
-            setting a password
-        </p>
-        <InputForm formLabel="Add User" :options="userForm" :onSubmit="addUser" />
-    </div>
+  <div class="flex w-full align-middle flex-col justify-center items-center">
+    <h1 class="text-4xl text-pop">Add a New User</h1>
+    <p class="text-sm text-white w-1/6 text-justify pb-8">
+      Add a new user to the authentication service by adding an email and
+      setting a password
+    </p>
+    <InputForm formLabel="Add User" :options="userForm" :onSubmit="addUser" />
+  </div>
 </template>
 
 <script setup>
@@ -70,7 +70,9 @@ function addUser(user) {
   }
 
   if (valid) {
-    const destination = process.env.API_HOST || ""
+
+    const destination = "https://auth.api.hurd-lab.com";
+
     console.log('User is valid');
     axios
       .post(

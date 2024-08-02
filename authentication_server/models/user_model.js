@@ -21,6 +21,7 @@ class user{
         return token;
     }
 
+    
 }
 
 export default user;
