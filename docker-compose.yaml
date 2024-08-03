@@ -17,7 +17,7 @@ services:
       tags:
         - "auth-db:v1.0.0"
     networks:
-      - my_network
+      - auth_network
     ports:
       - 3306:3306
 
@@ -31,7 +31,7 @@ services:
       tags:
         - "auth-ui:v1.0.0"
     networks:
-      - my_network
+      - auth_network
     ports:
       - 5173:5173
 
@@ -45,6 +45,6 @@ services:
       tags:
         - "auth-api:v1.0.0"
     networks:
-      - my_network
+      - auth_network
     ports:
       - 3000:3000
