@@ -26,7 +26,6 @@ authentication_router.get("/resetPassword", async (req, res) => {
 	console.log(result);
 	res.send("Password reset:" + user.getResetJWT());
 });
-
 authentication_router.post("/validateJWT", async (req, res) => {
 	var jwt = req.body.jwt;
 	if (jwt === undefined) {
@@ -34,8 +33,8 @@ authentication_router.post("/validateJWT", async (req, res) => {
 		return;
 	} else {
 		const decoded = await validateJWT(jwt);
-		console.log(decoded);
-		if (decoded === undefined) {
+
+		if (decoded === null) {
 			res.send("Invalid JWT");
 		} else {
 			res.send("Valid JWT");
