@@ -16,7 +16,7 @@ authentication_router.post("/login", async (req, res) => {
 	user_controller.validatePassword(req.body, res, user);
 });
 
-authentication_router.get("/resetPassword", async (req, res) => {
+authentication_router.post("/resetPassword", async (req, res) => {
 	var user = await user_controller.lookUpUserbyEmail(req.body, res);
 	if (res.statusCode !== 200) {
 		res.send("User not found");
